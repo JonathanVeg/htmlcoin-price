@@ -5,12 +5,12 @@ import Entry from '../Entry'
 import 'bootstrap/dist/css/bootstrap.css'
 
 export default function Home() {
-  const [entries, setEntries] = useState<[Entry]>([new Entry()])
+  const [entries, setEntries] = useState<[Entry] | null>(null)
 
   function openLine(entry) {
     const index = entries.indexOf(entry)
 
-    const newEntries = [...entries]
+    const newEntries: [Entry] = [...entries]
 
     newEntries[index].open = !newEntries[index].open
 
@@ -47,9 +47,10 @@ export default function Home() {
     }
 
     async function load() {
-      const data: [Entry] = []
+      const data: [Entry] = [new Entry()]
 
       let d = await loadHitBtcData()
+      data.pop()
       data.push(...d)
       d = await loadCrexData()
       data.push(...d)
