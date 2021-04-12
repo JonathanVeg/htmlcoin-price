@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 export default function Home() {
   const [entries, setEntries] = useState<[Entry] | null>(null)
+  const [btc, setBtc] = useState<number>(0.0)
+  const [htmlInBtc, setHtmlInBtc] = useState<number>(0.0)
 
   function openLine(entry) {
     const index = entries.indexOf(entry)
@@ -18,6 +20,18 @@ export default function Home() {
   }
 
   useEffect(() => {
+    async function loadBtcData() {
+      try {
+        const url = '/api/bitcoin'
+
+        const { data } = await axios.get(url)
+
+        setBtc(data.ticker.last)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
     async function loadHitBtcData() {
       try {
         const url = '/api/hitbtc'
@@ -26,9 +40,15 @@ export default function Home() {
 
         const data: [Entry] = response.data
 
+        console.log(data)
+
+        const f = data.find((it) => it.market.toLowerCase() === 'btc')
+
+        if (f) setHtmlInBtc(parseFloat(f.last))
+
         return data
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
@@ -42,7 +62,7 @@ export default function Home() {
 
         return data
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
@@ -55,17 +75,22 @@ export default function Home() {
       d = await loadCrexData()
       data.push(...d)
 
-      console.log(data)
-
       setEntries(data)
     }
 
     load()
+    loadBtcData()
   }, [])
 
   const PrintTableByExchange = ({ exchangeName }) => (
-    <div>
+    <Fragment>
       <h2 className="main-title">{exchangeName}</h2>
+      {exchangeName === 'Hitbtc' && (
+        <h3 className="main-title">
+          1M HTML is about {(btc * htmlInBtc * 1000000).toFixed(2)} BRL{' '}
+        </h3>
+      )}
+
       <table className="table">
         <thead>
           <tr>
@@ -112,7 +137,7 @@ export default function Home() {
             })}
         </tbody>
       </table>
-    </div>
+    </Fragment>
   )
 
   return (
@@ -122,15 +147,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="container">
-        <div className="d-flex align-items-center">
-          <div>
-            <h1 className="main-title">HTMLCoin Prices</h1>
-            <PrintTableByExchange exchangeName="Hitbtc" />
-            <PrintTableByExchange exchangeName="Crex" />
-          </div>
+      {/* <div className="container"> */}
+      <div className="d-flex align-items-center">
+        <div className="table">
+          <h1 className="main-title">HTMLCoin Prices</h1>
+          <PrintTableByExchange exchangeName="Hitbtc" />
+          <PrintTableByExchange exchangeName="Crex" />
         </div>
       </div>
+      {/* </div> */}
 
       <footer className="fixed-bottom d-flex justify-content-center">
         <a href="https://twitter.com/JonathanVeg2" target="_blank" rel="noreferrer">

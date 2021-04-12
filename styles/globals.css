@@ -14,6 +14,7 @@ body,
 .table {
   background-color: black;
   color: white !important;
+  width: 100%;
 }
 
 a,
@@ -28,4 +29,8 @@ a:visited {
 
 .main-title {
   text-align: center;
+}
+
+.table {
+  width: 100%;
 }
