@@ -87,7 +87,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {entries
+            {(entries || [])
               .filter((it) => it.exchange === 'Hitbtc')
               .map((entry) => {
                 return (
