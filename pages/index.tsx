@@ -63,6 +63,58 @@ export default function Home() {
     load()
   }, [])
 
+  const PrintTableByExchange = ({ exchangeName }) => (
+    <div>
+      <h2 className="main-title">{exchangeName}</h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <td>Market</td>
+            <td>Last</td>
+            <td>Vol. (mkt)</td>
+            {/* <td>Ask</td> */}
+          </tr>
+        </thead>
+        <tbody>
+          {(entries || [])
+            .filter((it) => it.exchange === exchangeName)
+            .map((entry) => {
+              return (
+                <Fragment key={`${Math.random()}`}>
+                  <tr key={`${Math.random()}`} onClick={() => openLine(entry)}>
+                    <td>
+                      {entry.market} {entry.open ? '▲' : '▼'}
+                    </td>
+                    <td>{entry.last}</td>
+                    <td>{parseFloat(entry.volumeQuote).toFixed(4)}</td>
+                  </tr>
+                  {entry.open && (
+                    <tr>
+                      <td></td>
+                      <td>
+                        <small>
+                          BID
+                          <br />
+                          ASK
+                        </small>
+                      </td>
+                      <td>
+                        <small>
+                          {entry.bid}
+                          <br />
+                          {entry.ask}
+                        </small>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              )
+            })}
+        </tbody>
+      </table>
+    </div>
+  )
+
   return (
     <div className="container">
       <Head>
@@ -73,56 +125,11 @@ export default function Home() {
       <div className="container">
         <div className="d-flex align-items-center">
           <div>
-            <h1>HTMLCoin Prices</h1>
+            <h1 className="main-title">HTMLCoin Prices</h1>
+            <PrintTableByExchange exchangeName="Hitbtc" />
+            <PrintTableByExchange exchangeName="Crex" />
           </div>
         </div>
-
-        <table className="table">
-          <thead>
-            <tr>
-              <td>Market</td>
-              <td>Last</td>
-              <td>Vol. (mkt)</td>
-              {/* <td>Ask</td> */}
-            </tr>
-          </thead>
-          <tbody>
-            {(entries || [])
-              .filter((it) => it.exchange === 'Hitbtc')
-              .map((entry) => {
-                return (
-                  <Fragment key={`${Math.random()}`}>
-                    <tr key={`${Math.random()}`} onClick={() => openLine(entry)}>
-                      <td>
-                        {entry.market} {entry.open ? '▲' : '▼'}
-                      </td>
-                      <td>{entry.last}</td>
-                      <td>{parseFloat(entry.volumeQuote).toFixed(4)}</td>
-                    </tr>
-                    {entry.open && (
-                      <tr>
-                        <td></td>
-                        <td>
-                          <small>
-                            BID
-                            <br />
-                            ASK
-                          </small>
-                        </td>
-                        <td>
-                          <small>
-                            {entry.bid}
-                            <br />
-                            {entry.ask}
-                          </small>
-                        </td>
-                      </tr>
-                    )}
-                  </Fragment>
-                )
-              })}
-          </tbody>
-        </table>
       </div>
 
       <footer className="fixed-bottom d-flex justify-content-center">
