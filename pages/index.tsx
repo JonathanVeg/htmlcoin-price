@@ -5,7 +5,7 @@ import Entry from '../Entry'
 import 'bootstrap/dist/css/bootstrap.css'
 
 export default function Home() {
-  const [entries, setEntries] = useState<[Entry]>([])
+  const [entries, setEntries] = useState<[Entry]>([new Entry()])
 
   function openLine(entry) {
     const index = entries.indexOf(entry)
