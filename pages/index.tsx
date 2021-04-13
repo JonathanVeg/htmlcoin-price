@@ -62,7 +62,7 @@ export default function Home() {
 
         console.log(data)
 
-        const f = data.find((it) => it.market.toLowerCase() === 'btcBRL')
+        const f = data.find((it) => it.market.toLowerCase() === 'btc')
 
         if (f) setHtmlInBtc(parseFloat(f.last))
 
