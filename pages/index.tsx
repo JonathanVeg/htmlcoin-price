@@ -10,6 +10,13 @@ export default function Home() {
   const [btcUSD, setBtcUSD] = useState<number>(0.0)
   const [htmlInBtc, setHtmlInBtc] = useState<number>(0.0)
 
+  useEffect(() => {
+    console.log(btcBRL)
+  }, [btcBRL])
+  useEffect(() => {
+    console.log(btcUSD)
+  }, [btcUSD])
+
   function openLine(entry) {
     const index = entries.indexOf(entry)
 
@@ -91,9 +98,9 @@ export default function Home() {
       setEntries(data)
     }
 
-    load()
     loadBtcBRLData()
     loadBtcUSDData()
+    load()
   }, [])
 
   const PrintTableByExchange = ({ exchangeName }) => (
