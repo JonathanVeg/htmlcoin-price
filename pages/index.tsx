@@ -6,7 +6,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 export default function Home() {
   const [entries, setEntries] = useState<[Entry] | null>(null)
-  const [btc, setBtc] = useState<number>(0.0)
+  const [btcBRL, setBtcBRL] = useState<number>(0.0)
+  const [btcUSD, setBtcUSD] = useState<number>(0.0)
   const [htmlInBtc, setHtmlInBtc] = useState<number>(0.0)
 
   function openLine(entry) {
@@ -20,13 +21,25 @@ export default function Home() {
   }
 
   useEffect(() => {
-    async function loadBtcData() {
+    async function loadBtcBRLData() {
       try {
-        const url = '/api/bitcoin'
+        const url = '/api/bitcoin-brl'
 
         const { data } = await axios.get(url)
 
-        setBtc(data.ticker.last)
+        setBtcBRL(data.ticker.last)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    async function loadBtcUSDData() {
+      try {
+        const url = '/api/bitcoin-usd'
+
+        const { data } = await axios.get(url)
+
+        setBtcUSD(data.USD.last)
       } catch (err) {
         console.error(err)
       }
@@ -42,7 +55,7 @@ export default function Home() {
 
         console.log(data)
 
-        const f = data.find((it) => it.market.toLowerCase() === 'btc')
+        const f = data.find((it) => it.market.toLowerCase() === 'btcBRL')
 
         if (f) setHtmlInBtc(parseFloat(f.last))
 
@@ -79,16 +92,22 @@ export default function Home() {
     }
 
     load()
-    loadBtcData()
+    loadBtcBRLData()
+    loadBtcUSDData()
   }, [])
 
   const PrintTableByExchange = ({ exchangeName }) => (
     <Fragment>
       <h2 className="main-title">{exchangeName}</h2>
       {exchangeName === 'Hitbtc' && (
-        <h3 className="main-title">
-          1M HTML is about {(btc * htmlInBtc * 1000000).toFixed(2)} BRL{' '}
-        </h3>
+        <Fragment>
+          <h3 className="main-title">
+            1M HTML is about {(btcBRL * htmlInBtc * 1000000).toFixed(2)} BRL
+          </h3>
+          <h3 className="main-title">
+            1M HTML is about {(btcUSD * htmlInBtc * 1000000).toFixed(2)} USD
+          </h3>
+        </Fragment>
       )}
 
       <table className="table">
