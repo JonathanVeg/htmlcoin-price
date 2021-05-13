@@ -14,8 +14,6 @@ export default async (req, res) => {
   data.map((item) => {
     const market = item.instrument.split('-').find((item) => item !== 'HTML')
 
-    console.log(market)
-
     const entry = new Entry()
     entry.market = market
     entry.exchange = 'Crex'

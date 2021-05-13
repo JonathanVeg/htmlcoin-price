@@ -5,22 +5,15 @@ import Entry from '../Entry'
 import 'bootstrap/dist/css/bootstrap.css'
 
 export default function Home() {
-  const [entries, setEntries] = useState<[Entry] | null>(null)
+  const [entries, setEntries] = useState<Entry[]>([])
   const [btcBRL, setBtcBRL] = useState<number>(0.0)
   const [btcUSD, setBtcUSD] = useState<number>(0.0)
   const [htmlInBtc, setHtmlInBtc] = useState<number>(0.0)
 
-  useEffect(() => {
-    console.log(btcBRL)
-  }, [btcBRL])
-  useEffect(() => {
-    console.log(btcUSD)
-  }, [btcUSD])
-
   function openLine(entry) {
     const index = entries.indexOf(entry)
 
-    const newEntries: [Entry] = [...entries]
+    const newEntries: Entry[] = [...entries]
 
     newEntries[index].open = !newEntries[index].open
 
@@ -58,9 +51,7 @@ export default function Home() {
 
         const response = await axios.get(url)
 
-        const data: [Entry] = response.data
-
-        console.log(data)
+        const data: Entry[] = response.data
 
         const f = data.find((it) => it.market.toLowerCase() === 'btc')
 
@@ -78,7 +69,7 @@ export default function Home() {
 
         const response = await axios.get(url)
 
-        const data: [Entry] = response.data
+        const data: Entry[] = response.data
 
         return data
       } catch (err) {
@@ -87,7 +78,7 @@ export default function Home() {
     }
 
     async function load() {
-      const data: [Entry] = [new Entry()]
+      const data: Entry[] = [new Entry()]
 
       let d = await loadHitBtcData()
       data.pop()
@@ -173,7 +164,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      {/* <div className="container"> */}
       <div className="d-flex align-items-center">
         <div className="table">
           <h1 className="main-title">HTMLCoin Prices</h1>
@@ -181,7 +171,6 @@ export default function Home() {
           <PrintTableByExchange exchangeName="Crex" />
         </div>
       </div>
-      {/* </div> */}
 
       <footer className="fixed-bottom d-flex justify-content-center">
         <a href="https://twitter.com/JonathanVeg2" target="_blank" rel="noreferrer">
