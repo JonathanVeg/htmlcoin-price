@@ -206,13 +206,13 @@ export default function Calculator() {
                 {quantity} HTML is about {(btcUSD * htmlInBtc * quantity).toFixed(2)} USD
               </h3>
 
-              <center>
+              <div className="d-flex justify-content-center">
                 <small>
                   It is calculated using the last price traded in the pair HTML-BTC in HitBTC
                   <br />
                   and the price of Bitcoin in BRL and USD
                 </small>
-              </center>
+              </div>
             </Fragment>
           </div>
         </div>
