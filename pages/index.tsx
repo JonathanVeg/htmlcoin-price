@@ -55,7 +55,7 @@ export default function Home() {
 
         const f = data.find((it) => it.market.toLowerCase() === 'btc')
 
-        if (f) setHtmlInBtc(parseFloat(f.last))
+        if (f) setHtmlInBtc(parseFloat(f.bid))
 
         return data
       } catch (err) {
@@ -112,7 +112,7 @@ export default function Home() {
         <thead>
           <tr>
             <td>Market</td>
-            <td>Last</td>
+            <td>BID / ASK / Last</td>
             <td>Vol. (mkt)</td>
             {/* <td>Ask</td> */}
           </tr>
@@ -120,6 +120,7 @@ export default function Home() {
         <tbody>
           {(entries || [])
             .filter((it) => it.exchange === exchangeName)
+            .filter((it) => it.market === 'BTC')
             .map((entry) => {
               return (
                 <Fragment key={`${Math.random()}`}>
@@ -127,7 +128,13 @@ export default function Home() {
                     <td>
                       {entry.market} {entry.open ? '▲' : '▼'}
                     </td>
-                    <td>{entry.last}</td>
+                    <td>
+                      {parseInt(entry.bid.toString().split('.')[1])}
+                      {' / '}
+                      {parseInt(entry.ask.toString().split('.')[1])}
+                      {' / '}
+                      {parseInt(entry.last.toString().split('.')[1])}
+                    </td>
                     <td>{parseFloat(entry.volumeQuote).toFixed(4)}</td>
                   </tr>
                   {entry.open && (
@@ -138,6 +145,8 @@ export default function Home() {
                           BID
                           <br />
                           ASK
+                          <br />
+                          LAST
                         </small>
                       </td>
                       <td>
@@ -145,6 +154,8 @@ export default function Home() {
                           {entry.bid}
                           <br />
                           {entry.ask}
+                          <br />
+                          {entry.last}
                         </small>
                       </td>
                     </tr>

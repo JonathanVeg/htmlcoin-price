@@ -107,7 +107,7 @@ export default function Calculator() {
       lastBid.toFixed(11)
 
     setResumeToSell(text)
-  }, [quantityToSell, bids])
+  }, [quantityToSell, bids, btcBRL, btcUSD])
 
   useEffect(() => {
     const val = localStorage.getItem('quantityInLocalStorage')
@@ -163,7 +163,7 @@ export default function Calculator() {
 
         const f = data.find((it) => it.market.toLowerCase() === 'btc')
 
-        if (f) setHtmlInBtc(parseFloat(f.last))
+        if (f) setHtmlInBtc(parseFloat(f.bid))
 
         return data
       } catch (err) {
