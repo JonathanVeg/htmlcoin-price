@@ -77,13 +77,31 @@ export default function Home() {
       }
     }
 
+    async function loadBittrexData() {
+      try {
+        const url = '/api/bittrex'
+
+        const response = await axios.get(url)
+
+        const data: Entry[] = response.data
+
+        return data
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
     async function load() {
       const data: Entry[] = [new Entry()]
 
       let d = await loadHitBtcData()
       data.pop()
       data.push(...d)
+
       d = await loadCrexData()
+      data.push(...d)
+
+      d = await loadBittrexData()
       data.push(...d)
 
       setEntries(data)
@@ -108,63 +126,79 @@ export default function Home() {
         </Fragment>
       )}
 
-      <table className="table">
-        <thead>
-          <tr>
-            <td>Market</td>
-            <td>BID / ASK / Last</td>
-            <td>Vol. (mkt)</td>
-            {/* <td>Ask</td> */}
-          </tr>
-        </thead>
-        <tbody>
-          {(entries || [])
-            .filter((it) => it.exchange === exchangeName)
-            .filter((it) => it.market === 'BTC')
-            .map((entry) => {
-              return (
-                <Fragment key={`${Math.random()}`}>
-                  <tr key={`${Math.random()}`} onClick={() => openLine(entry)}>
-                    <td>
-                      {entry.market} {entry.open ? '▲' : '▼'}
-                    </td>
-                    <td>
-                      {parseInt(entry.bid.toString().split('.')[1])}
-                      {' / '}
-                      {parseInt(entry.ask.toString().split('.')[1])}
-                      {' / '}
-                      {parseInt(entry.last.toString().split('.')[1])}
-                    </td>
-                    <td>{parseFloat(entry.volumeQuote).toFixed(4)}</td>
-                  </tr>
-                  {entry.open && (
-                    <tr>
-                      <td></td>
+      {(exchangeName === 'Bittrex' || (entries || []).length === 0) && (
+        <Fragment>
+          <p>NO DATA</p>
+        </Fragment>
+      )}
+
+      {(entries || []).length > 0 && (
+        <table className="table">
+          <thead>
+            <tr>
+              <td>Market</td>
+              <td>BID / ASK / Last</td>
+              <td>Vol. (mkt)</td>
+              {/* <td>Ask</td> */}
+            </tr>
+          </thead>
+          <tbody>
+            {(entries || [])
+              .filter((it) => it.exchange === exchangeName)
+              .filter((it) => it.market === 'BTC')
+              .map((entry) => {
+                return (
+                  <Fragment key={`${Math.random()}`}>
+                    <tr key={`${Math.random()}`} onClick={() => openLine(entry)}>
                       <td>
-                        <small>
-                          BID
-                          <br />
-                          ASK
-                          <br />
-                          LAST
-                        </small>
+                        {entry.market} {entry.open ? '▲' : '▼'}
                       </td>
                       <td>
-                        <small>
-                          {entry.bid}
-                          <br />
-                          {entry.ask}
-                          <br />
-                          {entry.last}
-                        </small>
+                        {parseInt(entry.bid.toString().split('.')[1])}
+                        {' / '}
+                        {parseInt(entry.ask.toString().split('.')[1])}
+                        {' / '}
+                        {parseInt(entry.last.toString().split('.')[1])}
                       </td>
+                      <td>{parseFloat(entry.volumeQuote).toFixed(4)}</td>
                     </tr>
-                  )}
-                </Fragment>
-              )
-            })}
-        </tbody>
-      </table>
+                    {entry.open && (
+                      <tr>
+                        <td></td>
+                        <td>
+                          <small>
+                            BID
+                            <br />
+                            ASK
+                            <br />
+                            LAST
+                            <br />
+                            HIGH
+                            <br />
+                            LOW
+                          </small>
+                        </td>
+                        <td>
+                          <small>
+                            {entry.bid}
+                            <br />
+                            {entry.ask}
+                            <br />
+                            {entry.last}
+                            <br />
+                            {entry.high} / +{((entry.high / entry.last - 1) * 100).toFixed(2)}%
+                            <br />
+                            {entry.low} / {((entry.low / entry.last - 1) * 100).toFixed(2)}%
+                          </small>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                )
+              })}
+          </tbody>
+        </table>
+      )}
     </Fragment>
   )
 
@@ -180,6 +214,7 @@ export default function Home() {
           <h1 className="main-title">HTMLCoin Prices</h1>
           <PrintTableByExchange exchangeName="Hitbtc" />
           <PrintTableByExchange exchangeName="Crex" />
+          <PrintTableByExchange exchangeName="Bittrex" />
         </div>
       </div>
 
