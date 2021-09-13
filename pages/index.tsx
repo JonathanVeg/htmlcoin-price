@@ -186,9 +186,17 @@ export default function Home() {
                             <br />
                             {entry.last}
                             <br />
-                            {entry.high} / +{((entry.high / entry.last - 1) * 100).toFixed(2)}%
+                            {entry.high} / +
+                            {((parseFloat(entry.high) / parseFloat(entry.last) - 1) * 100).toFixed(
+                              2
+                            )}
+                            %
                             <br />
-                            {entry.low} / {((entry.low / entry.last - 1) * 100).toFixed(2)}%
+                            {entry.low} /
+                            {((parseFloat(entry.low) / parseFloat(entry.last) - 1) * 100).toFixed(
+                              2
+                            )}
+                            %
                           </small>
                         </td>
                       </tr>
@@ -213,8 +221,8 @@ export default function Home() {
         <div className="table">
           <h1 className="main-title">HTMLCoin Prices</h1>
           <PrintTableByExchange exchangeName="Hitbtc" />
-          <PrintTableByExchange exchangeName="Crex" />
           <PrintTableByExchange exchangeName="Bittrex" />
+          <PrintTableByExchange exchangeName="Crex" />
         </div>
       </div>
 
