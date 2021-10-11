@@ -13,7 +13,7 @@ export default async (_, res) => {
 
   const entry = new Entry()
   entry.market = 'BTC'
-  entry.exchange = 'Bittrex'
+  entry.exchange = 'T1'
   entry.ask = data.Ask.toFixed(11)
   entry.bid = data.Bid.toFixed(11)
   entry.last = data.Last.toFixed(11)

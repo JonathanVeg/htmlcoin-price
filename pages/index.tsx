@@ -126,7 +126,7 @@ export default function Home() {
         </Fragment>
       )}
 
-      {(exchangeName === 'Bittrex' || (entries || []).length === 0) && (
+      {(exchangeName === 'T1' || (entries || []).length === 0) && (
         <Fragment>
           <p>NO DATA</p>
         </Fragment>
@@ -221,7 +221,7 @@ export default function Home() {
         <div className="table">
           <h1 className="main-title">HTMLCoin Prices</h1>
           <PrintTableByExchange exchangeName="Hitbtc" />
-          <PrintTableByExchange exchangeName="Bittrex" />
+          <PrintTableByExchange exchangeName="T1" />
           <PrintTableByExchange exchangeName="Crex" />
         </div>
       </div>
