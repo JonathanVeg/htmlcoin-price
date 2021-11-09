@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default async (_, res) => {
-  const url = 'https://api.bittrex.com/api/v1.1/public/getmarketsummary?market=btc-html'
+  const url = 'https://api.bittrex.com/api/v1.1/public/getmarketsummary?market=usdt-html'
   let { data } = await axios.get(url)
 
   if (!data.success) {
