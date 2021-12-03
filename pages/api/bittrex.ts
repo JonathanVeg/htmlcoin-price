@@ -2,7 +2,7 @@ import axios from 'axios'
 import Entry from '../../Entry'
 
 export default async (_, res) => {
-  const url = 'https://api.bittrex.com/api/v1.1/public/getmarketsummary?market=btc-html'
+  const url = 'https://api.bittrex.com/api/v1.1/public/getmarketsummary?market=usdt-html'
   let { data } = await axios.get(url)
 
   if (!data.success) {
@@ -12,8 +12,8 @@ export default async (_, res) => {
   data = data.result[0]
 
   const entry = new Entry()
-  entry.market = 'BTC'
-  entry.exchange = 'T1'
+  entry.market = 'USDT'
+  entry.exchange = 'Bittrex'
   entry.ask = data.Ask.toFixed(11)
   entry.bid = data.Bid.toFixed(11)
   entry.last = data.Last.toFixed(11)

@@ -126,12 +126,6 @@ export default function Home() {
         </Fragment>
       )}
 
-      {(exchangeName === 'T1' || (entries || []).length === 0) && (
-        <Fragment>
-          <p>NO DATA</p>
-        </Fragment>
-      )}
-
       {(entries || []).length > 0 && (
         <table className="table">
           <thead>
@@ -145,7 +139,6 @@ export default function Home() {
           <tbody>
             {(entries || [])
               .filter((it) => it.exchange === exchangeName)
-              .filter((it) => it.market === 'BTC')
               .map((entry) => {
                 return (
                   <Fragment key={`${Math.random()}`}>
@@ -221,8 +214,8 @@ export default function Home() {
         <div className="table">
           <h1 className="main-title">HTMLCoin Prices</h1>
           <PrintTableByExchange exchangeName="Hitbtc" />
-          <PrintTableByExchange exchangeName="T1" />
-          <PrintTableByExchange exchangeName="Crex" />
+          <PrintTableByExchange exchangeName="Bittrex" />
+          {/* <PrintTableByExchange exchangeName="Crex" /> */}
         </div>
       </div>
 
